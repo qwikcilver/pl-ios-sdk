@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment version="4352" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Card Web ViewVC-->
+        <scene sceneID="6fF-Nw-OKP">
+            <objects>
+                <viewController storyboardIdentifier="CardWebViewVC" modalPresentationStyle="fullScreen" id="0px-ND-pH3" customClass="CardWebViewVC" customModule="pl_ios_sdk_library" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Rsh-mJ-NWG">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gfX-uB-GF0">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j4G-SI-tG1">
+                                <rect key="frame" x="0.0" y="49" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Nqz-2d-OFl"/>
+                                    <constraint firstAttribute="width" constant="50" id="dwh-Ej-oOY"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="chevron.backward" catalog="system"/>
+                                <connections>
+                                    <action selector="backBtn:" destination="0px-ND-pH3" eventType="touchUpInside" id="wNi-Iy-Na0"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="bAF-Bm-DNl"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gfX-uB-GF0" firstAttribute="leading" secondItem="bAF-Bm-DNl" secondAttribute="leading" id="2ja-gQ-yVd"/>
+                            <constraint firstItem="j4G-SI-tG1" firstAttribute="leading" secondItem="bAF-Bm-DNl" secondAttribute="leading" id="Gj7-F7-AGD"/>
+                            <constraint firstItem="j4G-SI-tG1" firstAttribute="top" secondItem="bAF-Bm-DNl" secondAttribute="top" constant="5" id="HBM-Ux-HH7"/>
+                            <constraint firstItem="gfX-uB-GF0" firstAttribute="top" secondItem="Rsh-mJ-NWG" secondAttribute="top" id="N0J-mq-T8C"/>
+                            <constraint firstAttribute="bottom" secondItem="gfX-uB-GF0" secondAttribute="bottom" id="fJq-zH-r5H"/>
+                            <constraint firstItem="gfX-uB-GF0" firstAttribute="trailing" secondItem="bAF-Bm-DNl" secondAttribute="trailing" id="hyW-DK-On1"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="back" destination="j4G-SI-tG1" id="SLx-is-2ia"/>
+                        <outlet property="webView" destination="gfX-uB-GF0" id="uks-ZB-tl1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="j4A-d2-JZS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1766.6666666666667" y="-81.026785714285708"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="chevron.backward" catalog="system" width="32" height="32"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
