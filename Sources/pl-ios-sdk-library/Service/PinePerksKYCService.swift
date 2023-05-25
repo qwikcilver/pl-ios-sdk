@@ -19,6 +19,12 @@ class PinePerksKYCService {
     
     func selfieValidation(ckycUniqueId: String, selfieImageData: String, completion: @escaping (PLKYCResponse?, Error?) -> Void) {
         let validationEvent = Event.selfieValidation.description
+        
+        if ckycUniqueId == "" || selfieImageData == "" {
+            let PLKYCResponse = PLKYCResponse(responseCode: ResponseCodes.SELFIE_VALIDATION_ERROR.rawValue, responseMessage: ResponseMessage.SELFIE_VALIDATION_ERROR.rawValue)
+            print("\(SDKConstants.TAG)", PLKYCResponse)
+            completion(PLKYCResponse, nil)
+        }
         if Internet.isConnected() == true {
             let url = URL(string:baseUrl + BaseURLs.selfieURL)!
             let parameters: [String: Any] = [

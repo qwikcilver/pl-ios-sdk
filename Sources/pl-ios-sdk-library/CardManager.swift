@@ -41,7 +41,10 @@ public class CardManager {
     private func setRandomKey(randomKey: String) {
     }
     
-    public func openCardViewLink(controller: UIViewController?) {
+    public func openCardViewLink(controller: UIViewController?) throws {
+        if url == nil || url == "" {
+            throw PineLabsSDKException(message: ResponseMessage.SDK_NOT_INITIALIZED.rawValue)
+        }
         let storyboard = UIStoryboard(name: "CardManagement", bundle: Bundle.module)
         let vc = storyboard.instantiateViewController(withIdentifier: "CardWebViewVC") as! CardWebViewVC
         vc.url = url
@@ -64,15 +67,27 @@ public class CardManager {
     }
     
     public func validateViewCardOTP(otp: String) {
-        cardManagementService?.validateViewCardOTP(otp: otp)
+        do {
+            try cardManagementService?.validateViewCardOTP(otp: otp)
+        } catch {
+            
+        }
     }
     
     public func changePin(pin: String) {
-        cardManagementService?.changePin(pin: pin)
+        do {
+            try cardManagementService?.changePin(pin: pin)
+        } catch {
+            
+        }
     }
     
     public func validateChangePinOTP(otp: String) {
-        cardManagementService?.validateViewCardOTP(otp: otp,event: Event.changePinOtp)
+        do {
+            try cardManagementService?.validateViewCardOTP(otp: otp,event: Event.changePinOtp)
+        } catch {
+            
+        }
     }
     
     public func resendOTP() {

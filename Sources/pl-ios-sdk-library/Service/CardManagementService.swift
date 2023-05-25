@@ -7,16 +7,17 @@
 
 import Foundation
 import UIKit
+//import Cuckoo
 
 @available(iOS 11.0, *)
 class CardManagementService {
     
     private var baseUrl: String?
-    private var randomKey: String?
-    private var pinePerksSecret: PinePerksSecret?
+    var randomKey: String?
+    public var pinePerksSecret: PinePerksSecret?
     private var pinePerksSession: PinePerksSession?
     private var textField = UITextField()
-    
+    private var screenShotEnable = true
     init(baseUrl: String) {
         self.baseUrl = baseUrl
     }
@@ -41,33 +42,56 @@ class CardManagementService {
         return body
     }
     
+    func detectScreenShot() {
+        NotificationCenter.default.addObserver(
+            forName: UIApplication.userDidTakeScreenshotNotification,
+            object: nil,
+            queue: .main) { notification in
+                
+                if(self.screenShotEnable == true){
+                    print("screenshotTakenTrue")
+                    CardManager.mCardManager.newView?.view.UnhideContentOnScreenCapture()
+                    
+                }
+                else{
+                    print("screenshotTakenFalse")
+                    CardManager.mCardManager.newView?.view.hideContentOnScreenCapture()
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5){
+                        CardManager.mCardManager.newView?.view.UnhideContentOnScreenCapture()
+                    }
+                }
+            }
+    }
+    
     func showCardDetails() {
         do {
-        try validatePinePerksCredentials()
-      //  CardManager.mCardManager.newView?.view.hideContentOnScreenCapture()
-        var storedSessionId: String?
-        if let cardId = pinePerksSession?.getCardId(), !cardId.isEmpty {
-            print("\(SDKConstants.TAG) Valid sessionId found.")
-            storedSessionId = cardId
-        }
-        let cardDetailRequest = CardDetailRequest(clientKey: (pinePerksSecret?.getClientKey())!, referenceNumber: (pinePerksSecret?.getReferenceNumber())!, sessionId: storedSessionId)
-        
-        callViewCardAPI(cardDetailRequest: cardDetailRequest, event: Event.showCard)
+            try validatePinePerksCredentials()
+            screenShotEnable = false
+            var storedSessionId: String?
+            if let cardId = pinePerksSession?.getCardId(), !cardId.isEmpty {
+                print("\(SDKConstants.TAG) Valid sessionId found.")
+                storedSessionId = cardId
+            }
+            let cardDetailRequest = CardDetailRequest(clientKey: (pinePerksSecret?.getClientKey())!, referenceNumber: (pinePerksSecret?.getReferenceNumber())!, sessionId: storedSessionId)
+            
+            callViewCardAPI(cardDetailRequest: cardDetailRequest, event: Event.showCard)
         }
         catch let error {
             // Handle the error here
             print("\(SDKConstants.TAG) An error occurred: \(error.localizedDescription)")
             return
         }
-
+        self.detectScreenShot()
+        
     }
     
     func maskCardDetails() {
-     //   CardManager.mCardManager.newView?.view.UnhideContentOnScreenCapture()
+        screenShotEnable = true
         let cardDetailResponse = CardDetailResponse()
         let plCardResponse = PLCardResponse.init(responseCode: ResponseCodes.SUCCESS.rawValue,responseMessage: ResponseMessage.SUCCESS.rawValue,event: Event.hideCard.rawValue)
         
         updateCardInfo(event: Event.hideCard, decrptedDetail: cardDetailResponse, plCardResponse: plCardResponse)
+        self.detectScreenShot()
     }
     
     func updateCardInfo(event: Event,decrptedDetail: CardDetailResponse,plCardResponse: PLCardResponse) {
@@ -76,7 +100,7 @@ class CardManagementService {
         NotificationCenter.default.post(name: NSNotification.Name("CardCvvUpdated"), object: decrptedDetail)
     }
     
-    func validateViewCardOTP(otp: String, event: Event = Event.showCardOtp) {
+    func validateViewCardOTP(otp: String, event: Event = Event.showCardOtp) throws {
         do {
             try validatePinePerksCredentials()
             if pinePerksSecret?.checksum == nil {
@@ -88,7 +112,7 @@ class CardManagementService {
         } catch let error {
             // Handle the error here
             print("\(SDKConstants.TAG) An error occurred: \(error.localizedDescription)")
-            return
+            throw PineLabsSDKException(message: ResponseMessage.INVALID_OTP.rawValue)
         }
         
         if event == Event.showCardOtp {
@@ -100,7 +124,7 @@ class CardManagementService {
         }
     }
     
-    func changePin(pin: String) {
+    func changePin(pin: String) throws {
         do {
             try validatePinePerksCredentials()
             if pin.count != 4  {
@@ -108,7 +132,7 @@ class CardManagementService {
             }
         } catch {
             print("\(SDKConstants.TAG) An error occurred: \(error.localizedDescription)")
-            return
+            throw PineLabsSDKException(message: ResponseMessage.INVALID_PIN.rawValue)
         }
         
         guard let encryptedPin = EncryptDecryptUtils.encryptData(pin, symmetricKey: randomKey!) else {
@@ -135,7 +159,7 @@ class CardManagementService {
         callResendOTPAPI(resendOtpRequest: resendOtpRequest, event: Event.resendOtp)
     }
     
-    private func validatePinePerksCredentials() throws {
+    func validatePinePerksCredentials() throws {
         if baseUrl == nil || baseUrl == "" {
             throw PineLabsSDKException(message: ResponseMessage.SDK_NOT_INITIALIZED.rawValue)
         } else if pinePerksSecret == nil || pinePerksSecret?.username == nil || pinePerksSecret?.referenceNumber.isEmpty == nil || pinePerksSecret?.clientKey == nil {
@@ -322,7 +346,6 @@ class CardManagementService {
                 default:
                     plCardResponse = self.onUnsuccessfulPinePerksResponse(response: plCardResponse)
                 }
-                
                 // Notify the delegate that a card response has been received
                 CardManager.mCardManager.delegate?.didReceivePliossdkCardResponse(plCardResponse)
             } catch {
@@ -333,14 +356,12 @@ class CardManagementService {
         }
     }
     
-    
     func callResendOTPAPI<T: Encodable>(resendOtpRequest: T, event:Event) {
         // Check for internet connectivity before making the API call
         guard Internet.isConnected() else {
             print("\(SDKConstants.TAG) check your network connection")
             return
         }
-        
         // Construct the URL for the API call and log relevant details
         let url = URL(string: baseUrl! + BaseURLs.resendOTPApi)!
         
@@ -408,6 +429,5 @@ class CardManagementService {
         plCardResponse.event = event.rawValue
         CardManager.mCardManager.delegate?.didReceivePliossdkCardResponse(plCardResponse)
     }
-    
 }
 

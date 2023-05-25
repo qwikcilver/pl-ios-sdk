@@ -16,7 +16,7 @@ public class KYCManager {
     public var delegate: PliossdkResponseDelegate?
     private init(){}
     
-    public func initiateSelfieValidation(controller: UIViewController?,pinePerksUsername: String , ckycUniqueId: String ) {
+    public func initiateSelfieValidation(controller: UIViewController?,pinePerksUsername: String , ckycUniqueId: String ) throws {
         if (url != nil && !pinePerksUsername.isEmpty &&
             url != nil && controller != nil && !ckycUniqueId.isEmpty) {
             let storyboard = UIStoryboard(name: "SelfieValidation", bundle: Bundle.module)
@@ -27,9 +27,15 @@ public class KYCManager {
             vc.mainVC = controller!
             controller?.present(vc, animated: true)
         }
+        else {
+            throw PineLabsSDKException(message: ResponseMessage.SDK_NOT_INITIALIZED.rawValue)
+        }
     }
     
-    public static func getKycManager(url: String,delegate : PliossdkResponseDelegate) -> KYCManager {
+    public static func getKycManager(url: String,delegate : PliossdkResponseDelegate) -> KYCManager? {
+        if url == "" {
+            return nil
+        }
         KYCManager.mKycManager.url = url
         KYCManager.mKycManager.delegate = delegate
         return KYCManager.mKycManager

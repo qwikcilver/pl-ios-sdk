@@ -19,5 +19,6 @@ class SelfieValidationResponseModel: Decodable {
         self.kycDetail = kycDetail
         self.responseCode = responseCode
     }
+    init(){}
 }
 

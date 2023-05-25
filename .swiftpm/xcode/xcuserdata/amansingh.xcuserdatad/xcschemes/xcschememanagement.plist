@@ -10,23 +10,5 @@
 			<integer>0</integer>
 		</dict>
 	</dict>
-	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>pl-ios-sdk-library</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>pl-ios-sdk-libraryTests</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>pl-ios-sdk-library_pl-ios-sdk-library</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
 </dict>
 </plist>
