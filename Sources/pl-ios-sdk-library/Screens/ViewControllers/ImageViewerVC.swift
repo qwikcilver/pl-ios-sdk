@@ -20,6 +20,7 @@ class ImageViewerVC: UIViewController  {
     var mainVC = UIViewController()
     @IBOutlet weak var cancel: UIButton!
     @IBOutlet weak var nextBtn: UIButton!
+    var base64Data = ""
     
     // MARK: - View lifecycle methods
     
@@ -51,13 +52,17 @@ class ImageViewerVC: UIViewController  {
      - imageCapturedUri: The image data captured from the camera.
      */
     func initiateSelfieValidation(_ imageCapturedUri: Data) {
+        
+        
         guard let imageByte = getImageByte(imageCapturedUri) else {
+            let imageData = capturedImage.jpegData(compressionQuality: 1)
+            base64Data = imageData?.base64EncodedString() ?? ""
             let PLKYCResponse = PLKYCResponse(responseCode: ResponseCodes.SELFIE_VALIDATION_ERROR.rawValue, responseMessage: ResponseMessage.SELFIE_VALIDATION_ERROR.rawValue)
             print("\(SDKConstants.TAG)" , PLKYCResponse)
             self.dismissAllController(data: PLKYCResponse)
             return
         }
-        guard let selfieImageData = EncryptedSelfieValidationImage.getEncryptedSelfieImage(imageByte: imageByte, ckycUniqueId: ckycUniqueId) else {
+        guard let selfieImageData = EncryptedSelfieValidationImage.getEncryptedSelfieImage(base64Image: base64Data, ckycUniqueId: ckycUniqueId) else {
             let PLKYCResponse = PLKYCResponse(responseCode: ResponseCodes.ENCRYPTION_ERROR.rawValue, responseMessage: ResponseMessage.ENCRYPTION_ERROR.rawValue)
             print("\(SDKConstants.TAG)", PLKYCResponse)
             self.dismissAllController(data: PLKYCResponse)

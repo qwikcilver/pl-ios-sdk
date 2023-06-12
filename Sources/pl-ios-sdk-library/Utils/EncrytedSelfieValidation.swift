@@ -18,9 +18,9 @@ class EncryptedSelfieValidationImage {
         return Data(Array($0.bindMemory(to: UInt8.self)))
     }
     
-    static func getEncryptedSelfieImage(imageByte: Data, ckycUniqueId: String) -> String? {
+    static func getEncryptedSelfieImage(base64Image: String, ckycUniqueId: String) -> String? {
         do {
-            let base64Image = imageByte.base64EncodedString()
+//            let base64Image = imageByte.base64EncodedString()
             let data = "data:image/jpeg;base64,"
             let content = data + base64Image
             guard let checkSum = try getSelfieValidationCheckSum(content: content, ckycUniqueId: ckycUniqueId) else {
