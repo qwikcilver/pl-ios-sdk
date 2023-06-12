@@ -97,7 +97,7 @@ class SelfieValidationVC: UIViewController ,AVCapturePhotoCaptureDelegate {
     
     func flipCamera(){
         captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .medium
+        captureSession.sessionPreset = .high
         var lensFacing = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
         if(isFromFrontCamera){
             isFromFrontCamera = false
