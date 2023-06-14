@@ -68,13 +68,25 @@ class ImageViewerVC: UIViewController  {
             self.dismissAllController(data: PLKYCResponse)
             return
         }
+        let validationEvent = Event.selfieValidation.description
         let pinePerksKycService = PinePerksKYCService(baseUrl: url!, pinePerksUsername: pinePerksUsername)
         pinePerksKycService.selfieValidation(ckycUniqueId: ckycUniqueId, selfieImageData: selfieImageData) {response, code in
             print("\(SDKConstants.TAG) end loader")
             print("\(SDKConstants.TAG) end loader111",ResponseCodes.self)
             print("\(SDKConstants.TAG) end loader2",ResponseMessage.self)
+//            DispatchQueue.main.async {
+//                self.dismissAllController(data: response!)
+//            }
+            print("\(SDKConstants.TAG) Updated to 1.0.3")
             DispatchQueue.main.async {
-                self.dismissAllController(data: response!)
+                if(response != nil){
+                    self.dismissAllController(data: response!)
+                }
+                else {
+                    let plKycResponse = PLKYCResponse(responseCode: ResponseCodes.SDK_EXCEPTION.rawValue, responseMessage: ResponseMessage.SDK_EXCEPTION.rawValue, event:validationEvent)
+                    self.dismissAllController(data: plKycResponse)
+                }
+                
             }
         }
     }

@@ -19,7 +19,7 @@ public enum ResponseMessage: String {
     case IO_EXCEPTION = "Could not establish a connection with the server. Please retry after sometime"
     case EMPTY_BODY = "Empty response received from the API"
     case VALIDATION_ERROR = "Validation error"
-    
+    case SDK_EXCEPTION = "An exception occurred in SDK"
     case SDK_NOT_INITIALIZED = "SDK not initialized with URL"
     case SDK_CREDS_NOT_SET = "SDK credentials not set"
     case INVALID_PIN = "Provide a valid 4 digit PIN"

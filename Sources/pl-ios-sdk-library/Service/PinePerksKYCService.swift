@@ -58,10 +58,9 @@ class PinePerksKYCService {
                     plKycResponse.kycLink = responseModel.kycLink
                     plKycResponse.kycDetail = responseModel.kycDetail
                     plKycResponse.ckycUniqueId = responseModel.ckycUniqueId
-                    
                     completion(plKycResponse, nil)
                 } catch let error {
-                    completion(nil, error)
+//                    completion(nil, error)
                     let plKycResponse = PLKYCResponse(responseCode: ResponseCodes.SDK_EXCEPTION.rawValue, responseMessage: ResponseMessage.VALIDATION_ERROR.rawValue,event:validationEvent)
                     print("\(SDKConstants.TAG)", plKycResponse)
                     completion(plKycResponse, nil)
