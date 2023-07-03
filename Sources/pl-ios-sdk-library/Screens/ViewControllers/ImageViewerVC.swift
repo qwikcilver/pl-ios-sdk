@@ -53,10 +53,10 @@ class ImageViewerVC: UIViewController  {
      */
     func initiateSelfieValidation(_ imageCapturedUri: Data) {
         
-        
+        let imageData = capturedImage.jpegData(compressionQuality: 1)
+        base64Data = imageData?.base64EncodedString() ?? ""
         guard let imageByte = getImageByte(imageCapturedUri) else {
-            let imageData = capturedImage.jpegData(compressionQuality: 1)
-            base64Data = imageData?.base64EncodedString() ?? ""
+           
             let PLKYCResponse = PLKYCResponse(responseCode: ResponseCodes.SELFIE_VALIDATION_ERROR.rawValue, responseMessage: ResponseMessage.SELFIE_VALIDATION_ERROR.rawValue)
             print("\(SDKConstants.TAG)" , PLKYCResponse)
             self.dismissAllController(data: PLKYCResponse)
