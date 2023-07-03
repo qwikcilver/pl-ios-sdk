@@ -3,10 +3,10 @@
 //  Pliossdk
 //
 //  Created by Macbook on 16/03/23.
-//
 
 import Foundation
 import CommonCrypto
+import CryptoKit
 
 class EncryptedSelfieValidationImage {
     
@@ -20,13 +20,14 @@ class EncryptedSelfieValidationImage {
     
     static func getEncryptedSelfieImage(base64Image: String, ckycUniqueId: String) -> String? {
         do {
-//            let base64Image = imageByte.base64EncodedString()
+
             let data = "data:image/jpeg;base64,"
             let content = data + base64Image
             guard let checkSum = try getSelfieValidationCheckSum(content: content, ckycUniqueId: ckycUniqueId) else {
                 return nil
             }
             let selfieImageData = content + "~" + checkSum
+            
             return selfieImageData
         } catch {
             print("\(SDKConstants.TAG) Exception occurred while selfie image encryption -- \(error)")
@@ -36,17 +37,26 @@ class EncryptedSelfieValidationImage {
     
     private static func getSelfieValidationCheckSum(content: String, ckycUniqueId: String) throws -> String? {
         if let base64TagIndex = content.range(of: BASE_64_TAG)?.lowerBound,
+          
            let dataImageTagIndex = content.range(of: DATA_IMAGE_TAG)?.upperBound {
-            let encryptedImageStartIndex = content.index(base64TagIndex, offsetBy: BASE_64_TAG.count)
-            let dataImageTagEndIndex = content.index(dataImageTagIndex, offsetBy: -1)
-            let imageFormat = String(content[dataImageTagEndIndex..<dataImageTagIndex])
-            let originalEncryptedBytes = String(content[encryptedImageStartIndex...])
-            let rowChecksum = "\(originalEncryptedBytes.prefix(8))\(originalEncryptedBytes.suffix(8))\(imageFormat)\(originalEncryptedBytes.count)\(ckycUniqueId.prefix(8))"
+           
+            let base64Index = content.distance(from: content.startIndex, to: base64TagIndex)
+            let dataImageIndex = content.distance(from: content.startIndex, to: dataImageTagIndex)
+            let encryptedImageStartIndex1 = base64Index + BASE_64_TAG.count
+            let dataImageTagEndIndex1 = dataImageIndex + DATA_IMAGE_TAG.count
+            let imageFormat1 = content.prefix(base64Index).suffix(base64Index - dataImageIndex)
+            let originalEncryptedBytes = content.suffix(from: content.index(content.startIndex, offsetBy: encryptedImageStartIndex1))
+            let rowChecksum = "\(originalEncryptedBytes.prefix(8))\(originalEncryptedBytes.suffix(8))\(imageFormat1)\(originalEncryptedBytes.count)\(ckycUniqueId.prefix(8).suffix(8))"
+            
             guard let hashedChecksum = encryptData(data: rowChecksum) else {
                 return nil
             }
-            return hashedChecksum
+            
+            let hashedChecksum1 = try encryptData(rowChecksum,  symmetricKey: "p!neL@bs12345678")
+        
+            return hashedChecksum1
         }
+        
         return nil
     }
     
@@ -66,5 +76,34 @@ class EncryptedSelfieValidationImage {
             return encryptedData.base64EncodedString()
         }
         return nil
+    }
+    
+   
+    public static func encryptData(_ data: String, symmetricKey: String) -> String? {
+        guard let keyData = symmetricKey.data(using: .utf8) else {
+                return nil
+            }
+        let value = data.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let inputBuffer = value.data(using: .utf8) else {
+            print("\(SDKConstants.TAG) Invalid input data")
+            return nil
+        }
+        var encryptedBytes = [UInt8](repeating: 0, count: inputBuffer.count + kCCBlockSizeAES128)
+        let keyLength = size_t(kCCKeySizeAES128)
+        let options = CCOptions(kCCOptionECBMode + kCCOptionPKCS7Padding)
+        var numBytesEncrypted = 0
+        let cryptStatus = keyData.withUnsafeBytes { keyBytes in
+            inputBuffer.withUnsafeBytes { inputBytes in
+                CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), options,
+                        keyBytes.baseAddress, keyLength, nil, inputBytes.baseAddress, inputBuffer.count,
+                        &encryptedBytes, encryptedBytes.count, &numBytesEncrypted)
+            }
+        }
+        guard cryptStatus == kCCSuccess else {
+            print("\(SDKConstants.TAG) Encryption failed with status: \(cryptStatus)")
+            return nil
+        }
+        let encryptedData = Data(bytes: encryptedBytes, count: numBytesEncrypted)
+        return encryptedData.base64EncodedString()
     }
 }
