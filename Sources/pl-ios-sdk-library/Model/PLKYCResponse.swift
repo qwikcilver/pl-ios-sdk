@@ -13,7 +13,9 @@ public class PLKYCResponse: Codable {
     public var minKycLink: String?
     public var event: String?
     public var ckycUniqueId : String?
-    public var kycLink : String?
+    public var webLink: String?
+    public var mobileLink: String?
+    public var linkExpiryDateTime: String?
     
     init(responseCode: Int, responseMessage: String, event: String? = nil) {
         self.responseCode = responseCode

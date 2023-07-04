@@ -55,7 +55,18 @@ class PinePerksKYCService {
                 do {
                     let responseModel = try JSONDecoder().decode(SelfieValidationResponseModel.self, from: data)
                     let plKycResponse = PLKYCResponse(responseCode: responseModel.responseCode, responseMessage: responseModel.responseMessage!,event:validationEvent)
-                    plKycResponse.kycLink = responseModel.kycLink
+                    
+                    if responseModel.kycLink != nil {
+                        let kyclinkResponseModel : KYCLinkResponseModel = responseModel.kycLink!
+                        let weblink = kyclinkResponseModel.webLink
+                        let mobileLink = kyclinkResponseModel.mobileLink
+                        let linkExpiryDateTime = kyclinkResponseModel.linkExpiryDateTime
+                        plKycResponse.webLink = weblink
+                        plKycResponse.mobileLink = mobileLink
+                        plKycResponse.linkExpiryDateTime = linkExpiryDateTime
+                    }
+
+//                    plKycResponse.kycLink = responseModel.kycLink
                     plKycResponse.ckycUniqueId = responseModel.ckycUniqueId
                     completion(plKycResponse, nil)
                 } catch let error {

@@ -3,7 +3,6 @@
 //  CamStarter
 //
 //  Created by Macbook on 15/03/23.
-//
 
 import UIKit
 import AVFoundation
