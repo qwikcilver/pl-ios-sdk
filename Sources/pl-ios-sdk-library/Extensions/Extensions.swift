@@ -11,8 +11,16 @@ import UIKit
 @available(iOS 10.0, *)
 extension UIViewController {
     
+//    func dismissAllController(data: PLKYCResponse) {
+//        self.view.window!.rootViewController?.dismiss(animated: false) {
+//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+//                SwiftLoader.hide()
+//                KYCManager.mKycManager.delegate?.didReceivePliossdkResponse(data)
+//            }
+//        }
+//    }
     func dismissAllController(data: PLKYCResponse) {
-        self.view.window!.rootViewController?.dismiss(animated: false) {
+        self.dismiss(animated: false) {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
                 SwiftLoader.hide()
                 KYCManager.mKycManager.delegate?.didReceivePliossdkResponse(data)
