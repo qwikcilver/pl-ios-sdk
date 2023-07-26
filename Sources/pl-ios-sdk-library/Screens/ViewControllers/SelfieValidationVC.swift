@@ -11,6 +11,8 @@ import AVFoundation
 @available(iOS 10.0, *)
 class SelfieValidationVC: UIViewController ,AVCapturePhotoCaptureDelegate {
     
+    
+    
     // MARK: @IBOutlet
     @IBOutlet weak var previewView: UIView!
     @IBOutlet weak var flipBtn: UIButton!

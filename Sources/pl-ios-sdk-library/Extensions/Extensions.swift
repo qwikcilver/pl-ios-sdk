@@ -19,8 +19,13 @@ extension UIViewController {
 //            }
 //        }
 //    }
-    func dismissAllController(data: PLKYCResponse) {
+    func dismissAllController(data: PLKYCResponse){
+        var presentingViewController: UIViewController?
+        if let _ = self.presentingViewController as? SelfieValidationVC {
+            presentingViewController = self.presentingViewController
+        }
         self.dismiss(animated: false) {
+            presentingViewController?.dismiss(animated: true, completion: {})
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
                 SwiftLoader.hide()
                 KYCManager.mKycManager.delegate?.didReceivePliossdkResponse(data)
