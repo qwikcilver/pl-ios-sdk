@@ -42,31 +42,9 @@ class CardManagementService {
         return body
     }
     
-    func detectScreenShot() {
-        NotificationCenter.default.addObserver(
-            forName: UIApplication.userDidTakeScreenshotNotification,
-            object: nil,
-            queue: .main) { notification in
-                
-                if(self.screenShotEnable == true){
-                    print("screenshotTakenTrue")
-                    CardManager.mCardManager.newView?.view.UnhideContentOnScreenCapture()
-                    
-                }
-                else{
-                    print("screenshotTakenFalse")
-                    CardManager.mCardManager.newView?.view.hideContentOnScreenCapture()
-                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5){
-                        CardManager.mCardManager.newView?.view.UnhideContentOnScreenCapture()
-                    }
-                }
-            }
-    }
-    
     func showCardDetails() {
         do {
             try validatePinePerksCredentials()
-            screenShotEnable = false
             var storedSessionId: String?
             if let cardId = pinePerksSession?.getCardId(), !cardId.isEmpty {
                 print("\(SDKConstants.TAG) Valid sessionId found.")
@@ -81,17 +59,15 @@ class CardManagementService {
             print("\(SDKConstants.TAG) An error occurred: \(error.localizedDescription)")
             return
         }
-        self.detectScreenShot()
-        
     }
     
     func maskCardDetails() {
-        screenShotEnable = true
         let cardDetailResponse = CardDetailResponse()
         let plCardResponse = PLCardResponse.init(responseCode: ResponseCodes.SUCCESS.rawValue,responseMessage: ResponseMessage.SUCCESS.rawValue,event: Event.hideCard.rawValue)
         
         updateCardInfo(event: Event.hideCard, decrptedDetail: cardDetailResponse, plCardResponse: plCardResponse)
-        self.detectScreenShot()
+       
+    
     }
     
     func updateCardInfo(event: Event,decrptedDetail: CardDetailResponse,plCardResponse: PLCardResponse) {
