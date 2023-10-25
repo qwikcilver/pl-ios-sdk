@@ -25,8 +25,8 @@ class URLSessionDataTaskHandler {
         request.httpBody = httpBody
         
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = TimeInterval(10)
-        configuration.timeoutIntervalForResource = TimeInterval(10)
+        configuration.timeoutIntervalForRequest = TimeInterval(15)
+        configuration.timeoutIntervalForResource = TimeInterval(15)
         let session = URLSession(configuration: configuration)
         let task = session.dataTask(with: request, completionHandler: completion)
         task.resume()
@@ -48,8 +48,8 @@ class URLSessionDataTaskHandler {
         }
         
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = TimeInterval(10)
-        configuration.timeoutIntervalForResource = TimeInterval(10)
+        configuration.timeoutIntervalForRequest = TimeInterval(15)
+        configuration.timeoutIntervalForResource = TimeInterval(15)
         let session = URLSession(configuration: configuration)
         let task = session.dataTask(with: request, completionHandler: completion)
         task.resume()
@@ -71,8 +71,8 @@ class URLSessionDataTaskHandler {
         }
         
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = TimeInterval(10)
-        configuration.timeoutIntervalForResource = TimeInterval(10)
+        configuration.timeoutIntervalForRequest = TimeInterval(15)
+        configuration.timeoutIntervalForResource = TimeInterval(15)
         let session = URLSession(configuration: configuration)
         let task = session.dataTask(with: request, completionHandler: completion)
         task.resume()
@@ -94,8 +94,8 @@ class URLSessionDataTaskHandler {
         }
         
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = TimeInterval(10)
-        configuration.timeoutIntervalForResource = TimeInterval(10)
+        configuration.timeoutIntervalForRequest = TimeInterval(15)
+        configuration.timeoutIntervalForResource = TimeInterval(15)
         let session = URLSession(configuration: configuration)
         let task = session.dataTask(with: request, completionHandler: completion)
         task.resume()
@@ -117,8 +117,8 @@ class URLSessionDataTaskHandler {
         }
         
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = TimeInterval(10)
-        configuration.timeoutIntervalForResource = TimeInterval(10)
+        configuration.timeoutIntervalForRequest = TimeInterval(15)
+        configuration.timeoutIntervalForResource = TimeInterval(15)
         let session = URLSession(configuration: configuration)
         let task = session.dataTask(with: request, completionHandler: completion)
         task.resume()
@@ -140,8 +140,8 @@ class URLSessionDataTaskHandler {
         }
         
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = TimeInterval(10)
-        configuration.timeoutIntervalForResource = TimeInterval(10)
+        configuration.timeoutIntervalForRequest = TimeInterval(15)
+        configuration.timeoutIntervalForResource = TimeInterval(15)
         let session = URLSession(configuration: configuration)
         let task = session.dataTask(with: request, completionHandler: completion)
         task.resume()
