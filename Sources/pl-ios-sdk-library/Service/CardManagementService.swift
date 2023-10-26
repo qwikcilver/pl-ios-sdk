@@ -74,6 +74,7 @@ class CardManagementService {
         NotificationCenter.default.post(name: NSNotification.Name("CardDetailUpdated"), object: decrptedDetail)
         NotificationCenter.default.post(name: NSNotification.Name("CardExipiryUpdated"), object: decrptedDetail)
         NotificationCenter.default.post(name: NSNotification.Name("CardCvvUpdated"), object: decrptedDetail)
+        NotificationCenter.default.post(name: NSNotification.Name("CardIssueUpdated"), object: decrptedDetail)
     }
     
     func validateViewCardOTP(otp: String, event: Event = Event.showCardOtp) throws {

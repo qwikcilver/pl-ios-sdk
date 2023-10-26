@@ -33,21 +33,32 @@ public class CardIssueDateLabel : UILabel {
     
     public func commonInit() {
         text = DEFAULT_CARD_ISSUE
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCardDetailUpdated(_:)), name: NSNotification.Name("CardIssueUpdated"), object: nil)
     }
     
-    public func update(_ eventType: Event, cardDetailResponse: CardDetailResponse) {
-        print("\(SDKConstants.TAG) [CardNumberTextView] Subscriber notified for event: \(eventType)")
-        var issue = DEFAULT_CARD_ISSUE
+    @objc func handleCardDetailUpdated(_ notification: Notification) {
+        guard let cardDetailResponse = notification.object as? CardDetailResponse else {
+            return
+        }
+        updatelbl(Event.showCard, cardDetailResponse: cardDetailResponse)
+    }
+    
+    public  func updatelbl(_ eventType: Event, cardDetailResponse: CardDetailResponse) {
+        print("\(SDKConstants.TAG) [CardIssueTextView] Subscriber notified for event: \(eventType)")
+        var expiry = DEFAULT_CARD_ISSUE
         if eventType == Event.showCard || eventType == Event.showCardOtp {
-            issue = getFormattedIssueDate(cardDetailResponse.cardValidFromDate ?? "02/28")
+            expiry = getFormattedIssueDate(cardDetailResponse.cardValidFromDate ?? DEFAULT_CARD_ISSUE)
         }
         DispatchQueue.main.async {
-            self.text = issue
+            self.text = expiry
         }
     }
     
-    private func getFormattedIssueDate(_ cardValidFromDate: String) -> String {
-        return cardValidFromDate
+    private func getFormattedIssueDate(_ cardValidToDate: String) -> String {
+        let month = String(cardValidToDate.prefix(2))
+        let year = String(cardValidToDate.suffix(2))
+        return month + "/" + year
     }
+   
 }
 
