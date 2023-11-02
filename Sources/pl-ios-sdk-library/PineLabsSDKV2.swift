@@ -8,7 +8,9 @@
 import UIKit
 import Foundation
 
-class PineLabsSDKV2 :PineLabsSDK{
+
+@available(iOS 10.0, *)
+public class PineLabsSDKV2 :PineLabsSDK{
     private var _authToken :String = ""
     var authToken:String  {
         get {

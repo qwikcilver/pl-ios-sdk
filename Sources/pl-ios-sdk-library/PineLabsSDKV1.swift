@@ -8,7 +8,9 @@
 import UIKit
 import Foundation
 
-class PineLabsSDKV1 :PineLabsSDK{
+
+@available(iOS 10.0, *)
+public class PineLabsSDKV1 :PineLabsSDK{
     private var _username :String = ""
     var username:String  {
         get {
