@@ -5,6 +5,7 @@
 //  Created by Isak sayyed on 17/08/23.
 //
 
+import UIKit
 import Foundation
 
 class PineLabsSDKV1 :PineLabsSDK{
