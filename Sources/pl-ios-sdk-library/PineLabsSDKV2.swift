@@ -12,7 +12,7 @@ import Foundation
 @available(iOS 10.0, *)
 public class PineLabsSDKV2 :PineLabsSDK{
     private var _authToken :String = ""
-    var authToken:String  {
+    public var authToken:String  {
         get {
             return "Bearer "+_authToken
         }
