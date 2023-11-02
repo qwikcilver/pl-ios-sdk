@@ -9,21 +9,21 @@ import Foundation
 class PinePerksSecret {
     var clientKey: String
     var referenceNumber: String
-    var username: String
+    var credential: String
     var checksum: String?
     
-    init(clientKey: String, referenceNumber: String, username: String) {
+    init(clientKey: String, referenceNumber: String, credential: String) {
         self.clientKey = clientKey
         self.referenceNumber = referenceNumber
-        self.username = username
+        self.credential = credential
     }
     
-    func getUsername() -> String {
-        return username
+    func getcredential() -> String {
+        return credential
     }
     
-    func setUsername(username: String) {
-        self.username = username
+    func setcredential(credential: String) {
+        self.credential = credential
     }
     
     func getReferenceNumber() -> String {

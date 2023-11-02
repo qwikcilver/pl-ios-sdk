@@ -28,7 +28,9 @@ class SelfieValidationVC: UIViewController ,AVCapturePhotoCaptureDelegate {
     var previewLayer: AVCaptureVideoPreviewLayer!
     public var url : String? = nil
     var isFromFrontCamera = true
-    var pinePerksUsername = ""
+    var credential:String = ""
+    var selectedVersion:String = Version.Version_2.rawValue
+    var timeout:Int = 15
     var ckycUniqueId = ""
     var mainVC = UIViewController()
     
@@ -46,7 +48,7 @@ class SelfieValidationVC: UIViewController ,AVCapturePhotoCaptureDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("\(SDKConstants.TAG) received success")
+        print("\(SDKConstants.TAG) Selfie validation screen")
         isFromFrontCamera = true
         checkPermission()
     }
@@ -55,6 +57,12 @@ class SelfieValidationVC: UIViewController ,AVCapturePhotoCaptureDelegate {
         super.viewWillDisappear(animated)
         if(captureSession != nil){
             self.captureSession.stopRunning()
+        }
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            return .portrait
         }
     }
     
@@ -173,13 +181,15 @@ class SelfieValidationVC: UIViewController ,AVCapturePhotoCaptureDelegate {
     }
     
     func showImaViewer(image: UIImage) {
-        let storyboard = UIStoryboard(name: "SelfieValidation", bundle: Bundle.module)
+        let storyboard = UIStoryboard(name: "SelfieValidation", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "viewer") as! ImageViewerVC
         vc.capturedImage = image
-        vc.pinePerksUsername = self.pinePerksUsername
+        vc.credential = self.credential
         vc.ckycUniqueId = self.ckycUniqueId
+        vc.selectedVersion = self.selectedVersion
         vc.url = self.url
         vc.mainVC = mainVC
+        vc.timeout = timeout
         self.present(vc, animated: true)
     }
 }

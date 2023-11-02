@@ -44,7 +44,7 @@ public class CardExpiryDateLabel : UILabel {
     }
     
     public  func updatelbl(_ eventType: Event, cardDetailResponse: CardDetailResponse) {
-        print("\(SDKConstants.TAG) [CardNumberTextView] Subscriber notified for event: \(eventType)")
+        print("\(SDKConstants.TAG) [CardExpiryDateLabel] Subscriber notified for event: \(eventType)")
         var expiry = DEFAULT_CARD_EXPIRY
         if eventType == Event.showCard || eventType == Event.showCardOtp {
             expiry = getFormattedExpiryDate(cardDetailResponse.cardValidToDate ?? DEFAULT_CARD_EXPIRY)

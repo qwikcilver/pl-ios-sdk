@@ -10,7 +10,10 @@ import UIKit
 
 @available(iOS 11.0, *)
 public class CardManager {
-    
+
+    public var credential:String = ""
+    public var selectedVersion:String = Version.Version_2.rawValue
+    public var timeout:Int = 15
     public var delegate: PliossdkResponseDelegate?
     public var url: String? = nil
     public static let mCardManager = CardManager()
@@ -23,10 +26,37 @@ public class CardManager {
     public init() {
     }
     
-    public static func getCardManager(url: String,delegate : PliossdkResponseDelegate) -> CardManager {
+    public static func getCardManager(from instance :PineLabsSDK,delegate : PliossdkResponseDelegate,url: String) -> CardManager {
         CardManager.mCardManager.url = url
         CardManager.mCardManager.delegate = delegate
+        
+        setUpCardManager(from:instance)
         return CardManager.mCardManager
+    }
+    
+    private static func setUpCardManager(from instance:PineLabsSDK){
+        if let versionV1Instance = instance as? PineLabsSDKV1 {
+            setCredentials(versionV1Instance.username)
+            setSelectedVersion(versionV1Instance.version)
+                }else if let versionV2Instance = instance as? PineLabsSDKV2{
+                    setCredentials(versionV2Instance.authToken)
+                    setSelectedVersion(versionV2Instance.version)
+                 }else {
+                     print("\(SDKConstants.TAG) the instance is of unkown class")
+                }
+            setAPITimeout(instance.timeout)
+    }
+    
+    private static func setCredentials(_ newValue:String){
+        CardManager.mCardManager.credential = newValue
+    }
+    
+    private static func setSelectedVersion(_ newValue:String){
+        CardManager.mCardManager.selectedVersion = newValue
+    }
+    
+    private static func setAPITimeout(_ newValue:Int){
+        CardManager.mCardManager.timeout = newValue
     }
     
     private func setUrl(url: String) {
@@ -52,8 +82,13 @@ public class CardManager {
         controller?.present(vc, animated: true)
     }
     
-    public func setCredentials(clientKey: String, referenceNumber: String, username: String) {
-        cardManagementService?.setCredentials(session: pinePerksSession, clientKey: clientKey, referenceNumber: referenceNumber, username: username)
+    public func setCredentials(clientKey: String, referenceNumber: String) {
+        cardManagementService?.setSelectedVersion(selectedVersion: selectedVersion)
+        cardManagementService?.setAPITimeout(self.timeout)
+        
+        cardManagementService?.setCredentials(session: pinePerksSession, clientKey: clientKey, referenceNumber: referenceNumber, credential: credential)
+        print("\(SDKConstants.TAG) Credentials set successfully")
+
     }
     
     public func showCardDetails(view: UIViewController) {

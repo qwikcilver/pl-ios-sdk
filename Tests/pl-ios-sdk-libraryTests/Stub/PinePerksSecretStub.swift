@@ -14,7 +14,7 @@ class PinePerksSecretStub {
         return PinePerksSecret(
             clientKey: "qRmzm1zwcbFCbr0fCCVoV0Tb8FLwZhFjGoRSMxQLthQ=",
             referenceNumber: "XJViazjhXMDRCtQE8ay4NA==",
-            username: "te9zvDWnZ1nMqB2KViWnbw=="
+            credential: "te9zvDWnZ1nMqB2KViWnbw=="
         )
     }
     

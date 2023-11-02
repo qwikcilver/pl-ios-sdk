@@ -16,11 +16,20 @@ public class PLKYCResponse: Codable {
     public var webLink: String?
     public var mobileLink: String?
     public var linkExpiryDateTime: String?
+    public var additionalInfoDetail : AdditionalInfoDetail?
     
     init(responseCode: Int, responseMessage: String, event: String? = nil) {
         self.responseCode = responseCode
         self.responseMessage = responseMessage
         self.event = event
+    }
+    
+    func getAdditionalInfoDetail() -> AdditionalInfoDetail {
+        return additionalInfoDetail!
+    }
+    
+    func setAdditionalInfoDetail(additionalInfoDetail : AdditionalInfoDetail)  {
+        self.additionalInfoDetail = additionalInfoDetail
     }
     
     enum CodingKeys: String, CodingKey {

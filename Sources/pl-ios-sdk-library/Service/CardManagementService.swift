@@ -18,6 +18,9 @@ class CardManagementService {
     private var pinePerksSession: PinePerksSession?
     private var textField = UITextField()
     private var screenShotEnable = true
+    private var selectedVersion:String = Version.Version_2.rawValue
+    private var timeout:Int = 15
+
     init(baseUrl: String) {
         self.baseUrl = baseUrl
     }
@@ -27,11 +30,21 @@ class CardManagementService {
         return randomKey
     }
     
-    func setCredentials(session: PinePerksSession, clientKey: String, referenceNumber: String, username: String) {
-        print("\(SDKConstants.TAG) API Client initialized successfully.")
-        pinePerksSecret = PinePerksSecret(clientKey: clientKey, referenceNumber: referenceNumber, username: username)
-        print("\(SDKConstants.TAG) SDK initialized successfully.")
+    func setCredentials(session: PinePerksSession, clientKey: String, referenceNumber: String, credential: String) {
+        pinePerksSecret = PinePerksSecret(clientKey: clientKey, referenceNumber: referenceNumber, credential: credential)
+       
         self.pinePerksSession = session
+        URLSessionDataTaskHandler.setSelectedVersion(selectedVersion: selectedVersion)
+        URLSessionDataTaskHandler.setAPITimeout(timeout: timeout)
+        print("\(SDKConstants.TAG) SDK initialized successfully.")
+    }
+    
+    func setSelectedVersion(selectedVersion:String){
+        self.selectedVersion = selectedVersion
+    }
+    
+    func setAPITimeout(_ newValue:Int){
+        self.timeout = newValue
     }
     
     func getDecryptedCardDetails(body: CardDetailResponse) -> CardDetailResponse {
@@ -45,6 +58,7 @@ class CardManagementService {
     func showCardDetails() {
         do {
             try validatePinePerksCredentials()
+            screenShotEnable = false
             var storedSessionId: String?
             if let cardId = pinePerksSession?.getCardId(), !cardId.isEmpty {
                 print("\(SDKConstants.TAG) Valid sessionId found.")
@@ -62,12 +76,11 @@ class CardManagementService {
     }
     
     func maskCardDetails() {
+        screenShotEnable = true
         let cardDetailResponse = CardDetailResponse()
         let plCardResponse = PLCardResponse.init(responseCode: ResponseCodes.SUCCESS.rawValue,responseMessage: ResponseMessage.SUCCESS.rawValue,event: Event.hideCard.rawValue)
         
         updateCardInfo(event: Event.hideCard, decrptedDetail: cardDetailResponse, plCardResponse: plCardResponse)
-       
-    
     }
     
     func updateCardInfo(event: Event,decrptedDetail: CardDetailResponse,plCardResponse: PLCardResponse) {
@@ -139,7 +152,7 @@ class CardManagementService {
     func validatePinePerksCredentials() throws {
         if baseUrl == nil || baseUrl == "" {
             throw PineLabsSDKException(message: ResponseMessage.SDK_NOT_INITIALIZED.rawValue)
-        } else if pinePerksSecret == nil || pinePerksSecret?.username == nil || pinePerksSecret?.referenceNumber.isEmpty == nil || pinePerksSecret?.clientKey == nil {
+        } else if pinePerksSecret == nil || pinePerksSecret?.credential == nil || pinePerksSecret?.referenceNumber.isEmpty == nil || pinePerksSecret?.clientKey == nil {
             throw PineLabsSDKException(message: ResponseMessage.SDK_CREDS_NOT_SET.rawValue)
         }
     }
@@ -161,15 +174,20 @@ class CardManagementService {
         }
         
         // Construct the URL for the API call and log relevant details
-        let url = URL(string: baseUrl! + BaseURLs.getCardDetail)!
+        
+        //let url = URL(string: baseUrl! + BaseURLs.getCardDetail)!
         
         // Make the API call using URLSessionDataTaskHandler
-        URLSessionDataTaskHandler.fetchCardDetail(with: url, parameters: cardDetailRequest, pinePerksUsername: pinePerksSecret!.username) { [weak self] data, response, error in
+        URLSessionDataTaskHandler.fetchCardDetail(baseUrl: baseUrl!, parameters: cardDetailRequest, crednetial: pinePerksSecret!.credential) { [weak self] data, response, error in
             // Unwrap self and handle errors if present
             guard let self = self else { return }
             guard error == nil, let data = data else {
                 self.onFailureResponse(error ?? NSError(), event)
                 return
+            }
+            if let httpStatus = response as? HTTPURLResponse{
+                let statusCode = httpStatus.statusCode
+                print("\(SDKConstants.TAG) Card Response: HttpStatus -- \(statusCode)")
             }
             do {
                 let cardDetailResponse = try JSONDecoder().decode(CardDetailResponse.self, from: data)
@@ -208,10 +226,10 @@ class CardManagementService {
         }
         
         // Construct the URL for the API call and log relevant details
-        let url = URL(string: baseUrl! + BaseURLs.validateViewCardOTP)!
+        //let url = URL(string: baseUrl! + BaseURLs.validateViewCardOTP)!
         
         // Make the API call using URLSessionDataTaskHandler
-        URLSessionDataTaskHandler.validateViewCardOTP(with: url, parameters: validateOTPRequest, pinePerksUsername: pinePerksSecret!.username) { [weak self] data, response, error in
+        URLSessionDataTaskHandler.validateViewCardOTP(baseUrl: baseUrl!, parameters: validateOTPRequest, credential: pinePerksSecret!.credential) { [weak self] data, response, error in
             // Unwrap self and handle errors if present
             guard let self = self else { return }
             guard error == nil, let data = data else {
@@ -230,7 +248,6 @@ class CardManagementService {
                     print("\(SDKConstants.TAG) success")
                     let decryptedCardDetail = self.getDecryptedCardDetails(body: cardDetailResponse)
                     if let session = decryptedCardDetail.sessionId {
-                        print(session)
                         if self.pinePerksSession?.setCardId(session) != nil {
                             // do something if necessary
                         }
@@ -257,10 +274,10 @@ class CardManagementService {
         }
         
         // Construct the URL for the API call and log relevant details
-        let url = URL(string: baseUrl! + BaseURLs.changePin)!
+       // let url = URL(string: baseUrl! + BaseURLs.changePin)!
         
         // Make the API call using URLSessionDataTaskHandler
-        URLSessionDataTaskHandler.changePin(with: url, parameters: changePinRequest, pinePerksUsername: pinePerksSecret!.username) { [weak self] data, response, error in
+        URLSessionDataTaskHandler.changePin(baseUrl: baseUrl!, parameters: changePinRequest, credential:pinePerksSecret!.credential) { [weak self] data, response, error in
             // Unwrap self and handle errors if present
             guard let self = self else { return }
             guard error == nil, let data = data else {
@@ -300,10 +317,10 @@ class CardManagementService {
         }
         
         // Construct the URL for the API call and log relevant details
-        let url = URL(string: baseUrl! + BaseURLs.validateChangePinOTP)!
-        
+       // let url = URL(string: baseUrl! + BaseURLs.validateChangePinOTP)!
+      
         // Make the API call using URLSessionDataTaskHandler
-        URLSessionDataTaskHandler.validateChangePinOTP(with: url, parameters: validateOTPRequest, pinePerksUsername: pinePerksSecret!.username) { [weak self] data, response, error in
+        URLSessionDataTaskHandler.validateChangePinOTP(baseUrl: baseUrl!, parameters: validateOTPRequest, credential: pinePerksSecret!.credential) { [weak self] data, response, error in
             // Unwrap self and handle errors if present
             guard let self = self else { return }
             guard error == nil, let data = data else {
@@ -340,10 +357,10 @@ class CardManagementService {
             return
         }
         // Construct the URL for the API call and log relevant details
-        let url = URL(string: baseUrl! + BaseURLs.resendOTPApi)!
+        //let url = URL(string: baseUrl! + BaseURLs.resendOTPApi)!
         
         // Make the API call using URLSessionDataTaskHandler
-        URLSessionDataTaskHandler.resendOTP(with: url, parameters: resendOtpRequest, pinePerksUsername: pinePerksSecret!.username) { [weak self] data, response, error in
+        URLSessionDataTaskHandler.resendOTP(baseUrl: baseUrl!, parameters: resendOtpRequest, crdential: pinePerksSecret!.credential) { [weak self] data, response, error in
             // Unwrap self and handle errors if present
             guard let self = self else { return }
             guard error == nil, let data = data else {

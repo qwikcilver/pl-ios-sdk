@@ -16,8 +16,17 @@ public protocol PliossdkResponseDelegate: AnyObject {
 @available(iOS 10.0, *)
 public class PineLabsSDK {
     
-    private var url: String
-    private var delegate: PliossdkResponseDelegate?
+    var url: String
+    var delegate: PliossdkResponseDelegate?
+    private var _timeout :Int = 15
+    var timeout:Int  {
+        get {
+            return _timeout
+        }
+        set(newValue){
+            _timeout = newValue
+        }
+    }
     
     public init(url: String,delegate : PliossdkResponseDelegate) {
         self.url = url
@@ -25,11 +34,11 @@ public class PineLabsSDK {
     }
     
     public func getKycManager() -> KYCManager? {
-        return KYCManager.getKycManager(url: self.url,delegate: delegate!)
+        return KYCManager.getKycManager(from :self, delegate: delegate!,url: self.url)
     }
     
     @available(iOS 11.0, *)
     public func getCardManager() -> CardManager? {
-        return CardManager.getCardManager(url: self.url, delegate: delegate!)
+        return CardManager.getCardManager(from :self, delegate: delegate!,url: self.url)
     }
 }

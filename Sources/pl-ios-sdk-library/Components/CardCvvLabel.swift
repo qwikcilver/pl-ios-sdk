@@ -45,7 +45,7 @@ public class CardCvvLabel : UILabel {
     }
     
     public func updatelbl(_ eventType: Event, cardDetailResponse: CardDetailResponse) {
-        print("\(SDKConstants.TAG) [CardNumberTextView] Subscriber notified for event: \(eventType)")
+        print("\(SDKConstants.TAG) [CardCVVLabel] Subscriber notified for event: \(eventType)")
         
         var finalCvv = DEFAULT_CARD_CVV
         if eventType == Event.showCard || eventType == Event.showCardOtp {

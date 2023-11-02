@@ -17,7 +17,7 @@ class CardManagementServiceTest: XCTestCase {
     override func setUp() {
         super.setUp()
         cardManagementService = CardManagementService(baseUrl: "https://apiuat.pineperks.in")
-        cardManagementService.setCredentials(session: PinePerksSession.sessionPK, clientKey: "SJh7AkADjjGkJg5DnnB2Les6gg9XxLIN+p2f4Np3iBc=", referenceNumber: "XJViazjhXMDRCtQE8ay4NA==", username: "te9zvDWnZ1nMqB2KViWnbw==")
+        cardManagementService.setCredentials(session: PinePerksSession.sessionPK, clientKey: "SJh7AkADjjGkJg5DnnB2Les6gg9XxLIN+p2f4Np3iBc=", referenceNumber: "XJViazjhXMDRCtQE8ay4NA==", credential: "te9zvDWnZ1nMqB2KViWnbw==")
         
         cardManagementService.pinePerksSecret?.checksum = "bzh23j-nxha78i-932jja"
         cardManagementService.getRandomKey()
@@ -31,7 +31,7 @@ class CardManagementServiceTest: XCTestCase {
     func testGivenAChangePinRequest_WhenPinIsProper_thenReturnSDKResponse() throws {
             let mockCardManagementService = MockCardManagementService(baseUrl: "https://apiuat.pineperks.in")
             mockCardManagementService.getRandomKey()
-            mockCardManagementService.setCredentials(session: PinePerksSession.sessionPK, clientKey: "SJh7AkADjjGkJg5DnnB2Les6gg9XxLIN+p2f4Np3iBc=", referenceNumber: "XJViazjhXMDRCtQE8ay4NA==", username: "te9zvDWnZ1nMqB2KViWnbw==")
+        mockCardManagementService.setCredentials(session: PinePerksSession.sessionPK, clientKey: "SJh7AkADjjGkJg5DnnB2Les6gg9XxLIN+p2f4Np3iBc=", referenceNumber: "XJViazjhXMDRCtQE8ay4NA==", credential: "te9zvDWnZ1nMqB2KViWnbw==")
             
             try? mockCardManagementService.changePin(pin: "1234")
             XCTAssertTrue(mockCardManagementService.isValidatePinePerksCredentialsCalled)
@@ -52,7 +52,7 @@ class CardManagementServiceTest: XCTestCase {
     func testGivenAValidateChangePinOTPRequest_WhenOTPIsValid_thenReturnSDKResponse() throws {
         let mockCardManagementService = MockCardManagementService(baseUrl: "https://apiuat.pineperks.in")
         mockCardManagementService.getRandomKey()
-        mockCardManagementService.setCredentials(session: PinePerksSession.sessionPK, clientKey: "SJh7AkADjjGkJg5DnnB2Les6gg9XxLIN+p2f4Np3iBc=", referenceNumber: "XJViazjhXMDRCtQE8ay4NA==", username: "te9zvDWnZ1nMqB2KViWnbw==")
+        mockCardManagementService.setCredentials(session: PinePerksSession.sessionPK, clientKey: "SJh7AkADjjGkJg5DnnB2Les6gg9XxLIN+p2f4Np3iBc=", referenceNumber: "XJViazjhXMDRCtQE8ay4NA==", credential: "te9zvDWnZ1nMqB2KViWnbw==")
         mockCardManagementService.pinePerksSecret?.checksum = "bzh23j-nxha78i-932jja"
         try? mockCardManagementService.validateViewCardOTP(otp: "123456",event: Event.changePinOtp)
         XCTAssertTrue(mockCardManagementService.isValidatePinePerksCredentialsCalled)
@@ -72,7 +72,7 @@ class CardManagementServiceTest: XCTestCase {
     func testGivenAResendOTPRequest_WhenTypeIsPin_thenReturnSDKResponse() throws {
         let mockCardManagementService = MockCardManagementService(baseUrl: "https://apiuat.pineperks.in")
         mockCardManagementService.getRandomKey()
-        mockCardManagementService.setCredentials(session: PinePerksSession.sessionPK, clientKey: "SJh7AkADjjGkJg5DnnB2Les6gg9XxLIN+p2f4Np3iBc=", referenceNumber: "XJViazjhXMDRCtQE8ay4NA==", username: "te9zvDWnZ1nMqB2KViWnbw==")
+        mockCardManagementService.setCredentials(session: PinePerksSession.sessionPK, clientKey: "SJh7AkADjjGkJg5DnnB2Les6gg9XxLIN+p2f4Np3iBc=", referenceNumber: "XJViazjhXMDRCtQE8ay4NA==", credential: "te9zvDWnZ1nMqB2KViWnbw==")
         mockCardManagementService.pinePerksSecret?.checksum = "bzh23j-nxha78i-932jja"
         try? mockCardManagementService.validateViewCardOTP(otp: "123456",event: Event.changePinOtp)
         XCTAssertTrue(mockCardManagementService.isValidatePinePerksCredentialsCalled)
@@ -84,7 +84,7 @@ class CardManagementServiceTest: XCTestCase {
     func testGivenAResendOTPRequest_WhenTypeIsNotPin_thenReturnSDKResponse() throws {
         let mockCardManagementService = MockCardManagementService(baseUrl: "https://apiuat.pineperks.in")
         mockCardManagementService.getRandomKey()
-        mockCardManagementService.setCredentials(session: PinePerksSession.sessionPK, clientKey: "SJh7AkADjjGkJg5DnnB2Les6gg9XxLIN+p2f4Np3iBc=", referenceNumber: "XJViazjhXMDRCtQE8ay4NA==", username: "te9zvDWnZ1nMqB2KViWnbw==")
+        mockCardManagementService.setCredentials(session: PinePerksSession.sessionPK, clientKey: "SJh7AkADjjGkJg5DnnB2Les6gg9XxLIN+p2f4Np3iBc=", referenceNumber: "XJViazjhXMDRCtQE8ay4NA==", credential: "te9zvDWnZ1nMqB2KViWnbw==")
         mockCardManagementService.pinePerksSecret?.checksum = "bzh23j-nxha78i-932jja"
         mockCardManagementService.resendOTP()
         XCTAssertTrue(mockCardManagementService.isValidatePinePerksCredentialsCalled)

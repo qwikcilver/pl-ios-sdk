@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uKZ-H7-agY">
-                                <rect key="frame" x="0.0" y="74" width="414" height="686"/>
+                                <rect key="frame" x="0.0" y="78" width="414" height="682"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bas-5F-ftk">
                                 <rect key="frame" x="20" y="768" width="70" height="70"/>
@@ -72,16 +72,16 @@
         <scene sceneID="PJ7-Sm-F7B">
             <objects>
                 <viewController storyboardIdentifier="selfie" modalPresentationStyle="fullScreen" id="T7w-94-5g0" customClass="SelfieValidationVC" customModule="pl_ios_sdk_library" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="bIV-6J-H90">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="bIV-6J-H90">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vbd-hH-Ms6">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="48" width="383" height="814"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcG-zU-Rjs">
-                                <rect key="frame" x="20" y="60" width="50" height="50"/>
+                                <rect key="frame" x="20" y="64" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="52d-1W-g6a"/>
                                     <constraint firstAttribute="height" constant="50" id="wTd-Xz-D0O"/>
@@ -93,21 +93,22 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z2L-cr-N2S">
-                                <rect key="frame" x="157" y="754.5" width="100" height="95"/>
+                                <rect key="frame" x="157" y="790" width="69" height="60"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="96" id="EKZ-rn-lLQ"/>
+                                    <constraint firstAttribute="height" constant="60" id="EKZ-rn-lLQ"/>
+                                    <constraint firstAttribute="width" constant="69" id="flF-9T-GLu"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" backgroundImage="camera.circle" catalog="system"/>
+                                <state key="normal" backgroundImage="shutter"/>
                                 <connections>
                                     <action selector="clickBtn:" destination="T7w-94-5g0" eventType="touchUpInside" id="qqb-h4-d8T"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPn-bw-ozH">
-                                <rect key="frame" x="323" y="777.5" width="59" height="48"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPn-bw-ozH">
+                                <rect key="frame" x="333" y="800.5" width="49" height="38"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="59" id="63g-9o-4zW"/>
-                                    <constraint firstAttribute="height" constant="50" id="WHS-IH-sxU"/>
+                                    <constraint firstAttribute="width" constant="49" id="63g-9o-4zW"/>
+                                    <constraint firstAttribute="height" constant="40" id="WHS-IH-sxU"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" backgroundImage="camera.rotate.fill" catalog="system"/>
@@ -174,11 +175,11 @@
         </designable>
     </designables>
     <resources>
-        <image name="camera.circle" catalog="system" width="128" height="121"/>
-        <image name="camera.rotate.fill" catalog="system" width="128" height="94"/>
-        <image name="chevron.backward" catalog="system" width="96" height="128"/>
+        <image name="camera.rotate.fill" catalog="system" width="128" height="93"/>
+        <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="cross" width="64" height="64"/>
         <image name="retakeImg" width="64" height="64"/>
+        <image name="shutter" width="64" height="64"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -54,7 +54,7 @@ class KYCManagerTest: XCTestCase,PliossdkResponseDelegate {
         let pineLabsSDK = PineLabsSDK(url: bU, delegate: self)
         let kycManager = pineLabsSDK.getKycManager()
         let mockController = UIViewController()
-        XCTAssertThrowsError(try kycManager?.initiateSelfieValidation(controller: mockController, pinePerksUsername: "", ckycUniqueId: ""))
+        XCTAssertThrowsError(try kycManager?.initiateSelfieValidation(controller: mockController,  ckycUniqueId: ""))
     }
     
     func testGivenContext_whenRequiredDetailsPassedToSelfieValidationIsBlanked_thenActivityWillNotBeOpened() {
@@ -62,6 +62,6 @@ class KYCManagerTest: XCTestCase,PliossdkResponseDelegate {
         let pineLabsSDK = PineLabsSDK(url: bU, delegate: self)
         let kycManager = pineLabsSDK.getKycManager()
         let mockController = UIViewController()
-        XCTAssertThrowsError(try kycManager?.initiateSelfieValidation(controller: mockController, pinePerksUsername: "", ckycUniqueId: ""))
+        XCTAssertThrowsError(try kycManager?.initiateSelfieValidation(controller: mockController, ckycUniqueId: ""))
     }
 }
