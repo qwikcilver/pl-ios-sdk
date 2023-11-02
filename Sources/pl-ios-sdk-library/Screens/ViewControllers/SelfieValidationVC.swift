@@ -181,7 +181,7 @@ class SelfieValidationVC: UIViewController ,AVCapturePhotoCaptureDelegate {
     }
     
     func showImaViewer(image: UIImage) {
-        let storyboard = UIStoryboard(name: "SelfieValidation", bundle: nil)
+        let storyboard = UIStoryboard(name: "SelfieValidation", bundle: Bundle.module)
         let vc = storyboard.instantiateViewController(withIdentifier: "viewer") as! ImageViewerVC
         vc.capturedImage = image
         vc.credential = self.credential
