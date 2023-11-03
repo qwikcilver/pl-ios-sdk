@@ -19,7 +19,7 @@ public class PineLabsSDK {
     var url: String
     var delegate: PliossdkResponseDelegate?
     private var _timeout :Int = 15
-    var timeout:Int  {
+    public var timeout:Int  {
         get {
             return _timeout
         }
