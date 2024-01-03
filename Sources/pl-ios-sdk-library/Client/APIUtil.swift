@@ -12,7 +12,7 @@ class APIUtil {
     /* Version 1 urls */
     internal static let getCardDetailV1 = "/v1/sdk/cards/view/attribute"
     internal static let validateViewCardOTPV1 = "/v1/sdk/cards/view/validate/otp"
-    internal static let changePinV1 = "/v1/cards/setpin"
+    internal static let changePinV1 = "/v1/sdk/cards/setpin"
     internal static let validateChangePinOTPV1 = "/v1/sdk/cards/setpin/validate/otp"
     internal static let resendOTPV1 = "/v1/sdk/cards/resend/otp"
     internal static let selfieValidationV1 = "/v1/sdk/kycs/validate/selfie/image"
@@ -20,7 +20,7 @@ class APIUtil {
     /* Version 2 urls */
     internal static let getCardDetailV2 = "/v2/sdk/cards/view/attribute"
     internal static let validateViewCardOTPV2 = "/v2/sdk/cards/view/validate/otp"
-    internal static let changePinV2 = "/v2/cards/setpin"
+    internal static let changePinV2 = "/v2/sdk/cards/setpin"
     internal static let validateChangePinOTPV2 = "/v2/sdk/cards/setpin/validate/otp"
     internal static let resendOTPV2 = "/v2/sdk/cards/resend/otp"
     internal static let selfieValidationV2 = "/v2/sdk/kycs/validate/selfie/image"

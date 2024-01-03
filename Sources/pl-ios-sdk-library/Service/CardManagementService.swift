@@ -285,6 +285,11 @@ class CardManagementService {
                 return
             }
             
+            if let httpStatus = response as? HTTPURLResponse{
+                let statusCode = httpStatus.statusCode
+                print("\(SDKConstants.TAG) Card Response: HttpStatus -- \(statusCode)")
+            }
+            
             do {
                 let pinePerksResponse = try JSONDecoder().decode(PinePerksResponse.self, from: data)
                 var plCardResponse = PLCardResponse(responseCode: pinePerksResponse.responseCode!, responseMessage: pinePerksResponse.responseMessage!, event: event.rawValue)
