@@ -33,7 +33,7 @@ class APIUtil {
                                     Version.Version_2.rawValue:validateViewCardOTPV2],
         Event.changePin:[Version.Version_1.rawValue:changePinV1,
                                   Version.Version_2.rawValue:changePinV2],
-        Event.changePinOtp:[Version.Version_1.rawValue:validateViewCardOTPV1,
+        Event.changePinOtp:[Version.Version_1.rawValue:validateChangePinOTPV1,
                                      Version.Version_2.rawValue:validateChangePinOTPV2],
         Event.resendOtp:[Version.Version_1.rawValue:resendOTPV1,
                                   Version.Version_2.rawValue:resendOTPV2],
